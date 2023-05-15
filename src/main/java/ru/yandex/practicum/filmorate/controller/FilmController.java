@@ -16,7 +16,7 @@ import java.util.*;
 @RequestMapping("/films")
 public class FilmController {
     private int id = 1;
-    LocalDate RELEASE_DATE_NOT_BEFORE = LocalDate.of(1895, 12, 28);
+    LocalDate DATE = LocalDate.of(1895, 12, 28);
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private Map<Integer, Film> films = new HashMap<>();
 
@@ -48,11 +48,11 @@ public class FilmController {
         return film;
     }
 
-    void validate(Film film){
+    void validate(Film film) {
         if (film.getName() == null || film.getName().isBlank()) {
             throw new ValidationException("Название фильма не может быть пустым.");
         }
-        if (film.getReleaseDate().isBefore(RELEASE_DATE_NOT_BEFORE)) {
+        if (film.getReleaseDate().isBefore(DATE)) {
             throw new ValidationException("Дата выхода фильма ранее 28.12.1895.");
         }
     }

@@ -39,8 +39,7 @@ class UserControllerTest {
     }
 
     @Test
-    void findAllUser(){
+    void findAllUser() {
         assertEquals("[User(login=Lenin, name=Vladimir, id=2, email=nabronevike@vkomunism.su, birthday=1870-04-22)]", userController.findAllUser().toString(), "Info about users is not correct");
     }
-
 }

@@ -15,43 +15,38 @@ class FilmControllerTest {
     public void beforeEach() {
         filmController = new FilmController();
         film = Film.builder()
-                .name("Снегурочка")
-                .description("Фильм о нелегкой жизни населения города Прииск Маршальский Оймяконского района Якутии")
-                .releaseDate(LocalDate.of(1986, 11, 10))
-                .duration(120)
+                .name("Avatar")
+                .description("In 2154, the natural resources of the Earth have been depleted. The Resources Development Administration (RDA) mines the valuable mineral unobtanium on Pandora, a moon in the Alpha Centauri star system. Pandora, whose atmosphere is inhospitable to humans, is inhabited by the Na'vi, 10-foot-tall (3.0 m), blue-skinned, sapient humanoids that live in harmony with nature. To explore Pandora, genetically matched human scientists use Na'vi-human hybrids called avatars.")
+                .releaseDate(LocalDate.of(2009, 12, 10))
+                .duration(162)
                 .build();
+        filmController.add(film);
     }
 
     @Test
-    void shouldNotFilmWhenNameIsBlank() {
-        film.setName("");
-        assertEquals(0, filmController.getFilms().size(), "Число фильмов должно быть 0");
+    void addFilmInController() {
+        assertEquals(1, filmController.getFilms().size(), "Amount of films must be 1");
     }
 
     @Test
-    void shouldNotFilmWhenDescriptionSizeIsNull() {
-        film.setDescription("");
-        assertEquals(0, filmController.getFilms().size(), "Число фильмов должно быть 0");
+    void putFilmInController() {
+        film.setId(1);
+        film.setDuration(161);
+        filmController.put(film);
+        assertEquals("{1=Film(name=Avatar, description=In 2154, the natural resources of the Earth have been depleted. The Resources Development " +
+                "Administration (RDA) mines the valuable mineral unobtanium on Pandora, a moon in the Alpha Centauri star system. Pandora, whose atmosphere " +
+                "is inhospitable to humans, is inhabited by the Na'vi, 10-foot-tall (3.0 m), blue-skinned, sapient humanoids that live in harmony with nature. " +
+                "To explore Pandora, genetically matched human scientists use Na'vi-human hybrids called avatars., releaseDate=2009-12-10, duration=161, id=1)}",
+                filmController.getFilms().toString(), "Info about film is not correct");
     }
 
     @Test
-    void shouldNotFilmWhenDescriptionSizeIsMore200() {
-        film.setDescription("Очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень " +
-                "очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень " +
-                "очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень " +
-                "очень очень очень очень очень очень очень очень очень очень очень очень  длинное описание");
-        assertEquals(0, filmController.getFilms().size(), "Число фильмов должно быть 0");
-    }
-
-    @Test
-    void shouldNotFilmWhenReleaseDateBefore1895Year() {
-        film.setReleaseDate(LocalDate.of(1894, 10, 5));
-        assertEquals(0, filmController.getFilms().size(), "Число фильмов должно быть 0");
-    }
-
-    @Test
-    void shouldNotFilmWhenDurationIsNegative() {
-        film.setDuration(-1);
-        assertEquals(0, filmController.getFilms().size(), "Число фильмов должно быть 0");
+    void findAllFilms(){
+        assertEquals("[Film(name=Avatar, description=In 2154, the natural resources of the Earth have been depleted. " +
+                        "The Resources Development Administration (RDA) mines the valuable mineral unobtanium on Pandora, a moon in " +
+                        "the Alpha Centauri star system. Pandora, whose atmosphere is inhospitable to humans, is inhabited by the " +
+                        "Na'vi, 10-foot-tall (3.0 m), blue-skinned, sapient humanoids that live in harmony with nature. To explore " +
+                        "Pandora, genetically matched human scientists use Na'vi-human hybrids called avatars., releaseDate=2009-12-10, duration=162, id=1)]",
+                filmController.findAll().toString(), "\"Info about film is not correct");
     }
 }

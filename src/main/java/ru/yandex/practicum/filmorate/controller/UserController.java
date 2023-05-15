@@ -4,9 +4,7 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.IncorrectUserIdException;
-import ru.yandex.practicum.filmorate.exceptions.InvalidEmailException;
-import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -24,40 +22,40 @@ public class UserController {
 
     @GetMapping
     public Collection<User> findAllUser() {
-        log.debug("Получение списка пользователей");
-        log.debug("Количество зарегистрированных пользователей: {}", users.size());
+        log.info("Получение списка пользователей");
+        log.info("Количество зарегистрированных пользователей: {}", users.size());
         return users.values();
     }
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
+            throw new ValidationException("Адрес электронной почты не может быть пустым (post - create User).");
         }
         if (users.containsKey(user.getId())) {
-            throw new UserAlreadyExistException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
+            throw new ValidationException("Пользователь с электронной почтой " +
+                    user.getEmail() + " уже зарегистрирован (post - create User).");
         }
 
         if (user.getId() == 0) {
             user.setId(id++);
         }
         users.put(user.getId(), user);
-        log.debug("Количество зарегистрированных пользователей: {}", users.size());
-        log.debug("Добавление пользователя" + user);
+        log.info("Количество зарегистрированных пользователей: {}", users.size());
+        log.info("Добавление пользователя" + user);
         return user;
     }
 
     @PutMapping
     public User put(@Valid @RequestBody User user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
+            throw new ValidationException("Адрес электронной почты не может быть пустым (put User).");
         }
         if (!users.containsKey(user.getId())) {
-            throw new IncorrectUserIdException("Неверный ID.");
+            throw new ValidationException("Неверный ID (put User).");
         }
         users.put(user.getId(), user);
-        log.debug("Добавление пользователя" + user);
+        log.info("Добавление пользователя" + user);
         return user;
     }
 }

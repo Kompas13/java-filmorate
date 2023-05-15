@@ -17,13 +17,11 @@ public class User {
     private String login;
     private String name;
     private int id;
-    @Email
     @NotBlank
+    @Email
     private String email;
     @PastOrPresent
     private LocalDate birthday;
-
-
 
     public String getName() {
         if (name == null || name.isBlank()) {
@@ -31,5 +29,4 @@ public class User {
         }
         return name;
     }
-
 }

@@ -28,7 +28,7 @@ public class FilmController {
 
     @PostMapping
     public Film add(@Valid @RequestBody Film film) {
-        validate(film);
+        validateFilm(film);
         if (film.getId() == 0) {
             film.setId(id++);
         }
@@ -40,6 +40,7 @@ public class FilmController {
 
     @PutMapping
     public Film put(@Valid @RequestBody Film film) {
+        validateFilm(film);
         if (!films.containsKey(film.getId())) {
             throw new ValidationException("Неверный ID.");
         }
@@ -48,7 +49,7 @@ public class FilmController {
         return film;
     }
 
-    void validate(Film film) {
+    void validateFilm(Film film) {
         if (film.getName() == null || film.getName().isBlank()) {
             throw new ValidationException("Название фильма не может быть пустым.");
         }

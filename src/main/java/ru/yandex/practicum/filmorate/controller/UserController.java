@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -29,9 +30,7 @@ public class UserController {
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new ValidationException("Адрес электронной почты не может быть пустым (post - create User).");
-        }
+        validateUser(user);
         if (users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь с электронной почтой " +
                     user.getEmail() + " уже зарегистрирован (post - create User).");
@@ -48,14 +47,18 @@ public class UserController {
 
     @PutMapping
     public User put(@Valid @RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new ValidationException("Адрес электронной почты не может быть пустым (put User).");
-        }
+        validateUser(user);
         if (!users.containsKey(user.getId())) {
             throw new ValidationException("Неверный ID (put User).");
         }
         users.put(user.getId(), user);
         log.info("Добавление пользователя" + user);
         return user;
+    }
+
+    void validateUser(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new ValidationException("Адрес электронной почты не может быть пустым (put User).");
+        }
     }
 }

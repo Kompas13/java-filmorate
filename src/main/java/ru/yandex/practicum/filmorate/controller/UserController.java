@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
@@ -35,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable(name = "userId") Integer userId){
+    public User getUserById(@PathVariable(name = "userId") Integer userId) {
         return userService.getUserById(userId);
     }
 
@@ -52,13 +51,13 @@ public class UserController {
 
     //Список пользователей, являющихся друзьями пользователя с ID
     @GetMapping("/{id}/friends")
-    public Collection<User> getUserFriends(@PathVariable(name = "id") Integer userId){
+    public Collection<User> getUserFriends(@PathVariable(name = "id") Integer userId) {
         return userService.getUserFriends(userId);
     }
 
     //Список друзей, общих с другим пользователем.
     @GetMapping("{id}/friends/common/{otherId}")
-    public Collection<User> getCommonFriends(@PathVariable(name = "id") Integer userFirstId, @PathVariable(name = "otherId") Integer userSecondId){
+    public Collection<User> getCommonFriends(@PathVariable(name = "id") Integer userFirstId, @PathVariable(name = "otherId") Integer userSecondId) {
         return userService.getCommonFriends(userFirstId, userSecondId);
     }
 }

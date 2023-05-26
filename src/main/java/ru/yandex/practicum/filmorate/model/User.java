@@ -26,7 +26,6 @@ public class User {
     private final Set<Integer> friends = new HashSet<>();
     private final Set<Integer> likesFilm = new HashSet<>();
 
-
     public String getName() {
         if (name == null || name.isBlank()) {
             name = login;

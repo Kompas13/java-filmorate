@@ -1,15 +1,13 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.*;
+
 @RestController
 @RequestMapping("/films")
 
@@ -37,7 +35,7 @@ public class FilmController {
     }
 
     @PutMapping("/{filmId}/like/{userId}")
-    public Integer addLikeFilm(@PathVariable(name = "filmId") Integer filmId, @PathVariable(name = "userId") Integer userId){
+    public Integer addLikeFilm(@PathVariable(name = "filmId") Integer filmId, @PathVariable(name = "userId") Integer userId) {
         return filmService.addLikeFilm(filmId, userId);
     }
 
@@ -53,9 +51,7 @@ public class FilmController {
     }
 
     @GetMapping("/{filmId}")
-        public Film getFilmById(@PathVariable(name = "filmId") Integer filmId){
+    public Film getFilmById(@PathVariable(name = "filmId") Integer filmId) {
         return filmService.getFilmById(filmId);
-        }
-
-
+    }
 }

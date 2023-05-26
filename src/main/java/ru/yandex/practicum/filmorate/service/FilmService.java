@@ -33,7 +33,6 @@ public class FilmService {
         return filmStorage.addFilm(film);
     }
 
-
     public Film putFilm(Film film) {
         log.info("Обновление фильма " + film);
         return filmStorage.putFilm(film);

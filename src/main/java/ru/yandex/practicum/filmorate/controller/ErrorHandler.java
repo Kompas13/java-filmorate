@@ -19,7 +19,6 @@ public class ErrorHandler {
         );
     }
 
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleValidationException(final ValidationException e) {
@@ -27,5 +26,4 @@ public class ErrorHandler {
                 e.getMessage()
         );
     }
-
 }

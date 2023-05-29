@@ -21,6 +21,7 @@ public class Film {
     @NotNull
     private LocalDate releaseDate;
     @Positive
+    @NotNull(message = "Не задана продолжительность фильма.")
     private int duration;
     @Builder.Default
     private int id;

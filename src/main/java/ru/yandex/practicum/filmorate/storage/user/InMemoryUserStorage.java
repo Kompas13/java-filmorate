@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -20,7 +21,8 @@ public class InMemoryUserStorage implements UserStorage {
     public Map<Integer, User> findAllUsers() {
         log.info("Получение списка пользователей");
         log.info("Количество зарегистрированных пользователей: {}", users.size());
-        return users;
+        Map<Integer, User> usersForReturn = users;
+        return usersForReturn;
     }
 
     @Override
@@ -60,7 +62,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Integer userId) {
         if (!users.containsKey(userId)) {
-            throw new ValidationException("Указанный ID не найден" + userId);
+            throw new NotFoundException("Указанный ID не найден" + userId);
         }
         return users.get(userId);
     }

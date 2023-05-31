@@ -2,11 +2,13 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.Storage;
 
 import java.util.List;
 import java.util.Map;
@@ -14,55 +16,64 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-
-    private final FilmStorage filmStorage;
+    @Autowired
+    @Qualifier("filmStorage")
+    private final Storage filmStorage;
+    @Autowired
+    @Qualifier("userStorage")
+    private final Storage userStorage;
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(Storage filmStorage, Storage userStorage) {
         this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
     }
 
     public Map<Integer, Film> findFilms() {
-        log.info("Количество фильмов в фильмотеке: {}", filmStorage.getFilmList().size());
-        return filmStorage.findAllFilms();
+        log.info("Количество фильмов в фильмотеке: {}", filmStorage.getList().size());
+        return filmStorage.findAll();
     }
 
     public Film addFilm(Film film) {
-        log.info("Количество добавленных фильмов: {}", filmStorage.getFilmList().size());
+        log.info("Количество добавленных фильмов: {}", filmStorage.getList().size());
         log.info("Добавление фильма" + film);
-        return filmStorage.addFilm(film);
+        return (Film) filmStorage.create(film);
     }
 
     public Film putFilm(Film film) {
         log.info("Обновление фильма " + film);
-        return filmStorage.putFilm(film);
+        return (Film) filmStorage.put(film);
     }
 
     public Integer addLikeFilm(Integer filmId, Integer userId) {
-        if (filmId < 1 || userId < 1) {
-            throw new ValidationException("Некорректный ID");
+        if (!userStorage.contains(userId)) {
+            throw new NotFoundException("Указанный ID не найден");
         }
-        filmStorage.getFilmById(filmId).getLikesUser().add(userId);
+        Film film = (Film) filmStorage.getById(filmId);
+        film.addLike(userId);
         log.info("Добавление Like к фильму " + filmId);
         return userId;
     }
 
 
     public Integer deleteLikeFilm(Integer filmId, Integer userId) {
-        if (filmId < 1 || userId < 1) {
-            throw new ValidationException("Некорректный ID");
+        if (!userStorage.contains(userId)) {
+            throw new NotFoundException("Указанный ID не найден");
         }
-        filmStorage.getFilmById(filmId).getLikesUser().remove(userId);
+        Film film = (Film) filmStorage.getById(filmId);
+        film.deleteLike(userId);
         log.info("Удаление Like к фильму " + filmId);
         return userId;
     }
 
     public List<Film> getTopFilms(Integer count) {
         List<Film> popular;
-        if (filmStorage.getFilmList().size() <= 1) {
-            popular = filmStorage.getFilmList();
+        List<Film> filmList = (List<Film>) filmStorage.getList();
+        if (filmStorage.getList().size() <= 1) {
+            popular = (List<Film>) filmStorage.getList();
         } else {
-            popular = filmStorage.getFilmList().stream().sorted((film1, film2) -> {
+            popular = filmList.stream().sorted((film1, film2) -> {
+
                 if (film1.getLikesUser().size() == film2.getLikesUser().size())
                     return 0;
                 else if (film1.getLikesUser().size() > film2.getLikesUser().size()) {
@@ -78,6 +89,6 @@ public class FilmService {
     }
 
     public Film getFilmById(Integer filmId) {
-        return filmStorage.getFilmById(filmId);
+        return (Film) filmStorage.getById(filmId);
     }
 }

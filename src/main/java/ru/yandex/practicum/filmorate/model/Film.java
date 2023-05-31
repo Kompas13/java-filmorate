@@ -10,9 +10,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Data
-@Builder
+@Getter
+@Setter
 public class Film {
     @NotBlank
     private String name;
@@ -26,6 +25,18 @@ public class Film {
     @Builder.Default
     private int id;
     private final Set<Integer> likesUser = new HashSet<>();
+
+    public void addLike(Integer userId) {
+        likesUser.add(userId);
+    }
+
+    public void deleteLike(Integer userId) {
+        likesUser.remove(userId);
+    }
+
+    public Set<Integer> getLikesUser() {
+        return new HashSet<>(likesUser);
+    }
 }
 
 

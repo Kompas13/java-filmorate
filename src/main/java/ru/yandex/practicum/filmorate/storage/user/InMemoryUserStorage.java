@@ -8,17 +8,18 @@ import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.Storage;
 
 import java.util.*;
 
-@Component
+@Component(value = "userStorage")
 @Getter
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserStorage implements Storage<User> {
     private int id = 1;
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private Map<Integer, User> users = new HashMap<>();
 
-    public Map<Integer, User> findAllUsers() {
+    public Map<Integer, User> findAll() {
         log.info("Получение списка пользователей");
         log.info("Количество зарегистрированных пользователей: {}", users.size());
         Map<Integer, User> usersForReturn = users;
@@ -26,7 +27,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User createUser(User user) {
+    public User create(User user) {
         validateUser(user);
         if (users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь с электронной почтой " +
@@ -43,10 +44,10 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User putUser(User user) {
+    public User put(User user) {
         validateUser(user);
         if (!users.containsKey(user.getId()) || user.getId() < 0) {
-            throw new ValidationException("Неверный ID (put User).");
+            throw new NotFoundException("Неверный ID (put User).");
         }
         users.put(user.getId(), user);
         log.info("Добавление пользователя" + user);
@@ -60,7 +61,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(Integer userId) {
+    public User getById(Integer userId) {
         if (!users.containsKey(userId)) {
             throw new NotFoundException("Указанный ID не найден" + userId);
         }
@@ -68,7 +69,12 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> getList() {
         return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public Boolean contains(Integer userId) {
+        return users.containsKey(userId);
     }
 }

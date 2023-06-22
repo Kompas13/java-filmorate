@@ -36,7 +36,7 @@ public class UserDbStorage implements Storage<User> {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("user_id");
-        user.setId(simpleJdbcInsert.executeAndReturnKey(toMap(user)).longValue());
+        user.setId(simpleJdbcInsert.executeAndReturnKey(userToMap(user)).longValue());
 
         log.info("Добавлен пользователь: {} {}", user.getId(), user.getName());
         return user;
@@ -87,7 +87,7 @@ public class UserDbStorage implements Storage<User> {
                 .build();
     }
 
-    private Map<String, Object> toMap(User user) {
+    private Map<String, Object> userToMap(User user) {
         Map<String, Object> users = new HashMap<>();
         users.put("email", user.getEmail());
         users.put("login", user.getLogin());

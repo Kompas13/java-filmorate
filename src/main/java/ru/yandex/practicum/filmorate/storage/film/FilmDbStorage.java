@@ -64,7 +64,7 @@ public class FilmDbStorage implements Storage<Film> {
             throw new ValidationException("Дата выхода фильма ранее 28.12.1895.");
         }
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("film").usingGeneratedKeyColumns("film_id");
-        film.setId(simpleJdbcInsert.executeAndReturnKey(FilmtoMap(film)).longValue());
+        film.setId(simpleJdbcInsert.executeAndReturnKey(FilmToMap(film)).longValue());
         film.setMpa(ratingStorage.getMPAById(film.getMpa().getId()));
         if (film.getGenres() != null) {
             genreStorage.updateFilmGenre(film);
@@ -128,7 +128,7 @@ public class FilmDbStorage implements Storage<Film> {
         return Optional.ofNullable(count).map(c -> c > 0).orElse(false);
     }
 
-    private Map<String, Object> FilmtoMap(Film film) {
+    private Map<String, Object> FilmToMap(Film film) {
         Map<String, Object> films = new HashMap<>();
         films.put("name", film.getName());
         films.put("description", film.getDescription());

@@ -17,11 +17,14 @@ public class InMemoryFilmStorage implements Storage<Film> {
 
     private int id = 1;
     LocalDate date = LocalDate.of(1895, 12, 28);
-    private Map<Integer, Film> films = new HashMap<>();
+    private Map<Long, Film> films = new HashMap<>();
 
     @Override
-    public Map<Integer, Film> findAll() {
-        Map<Integer, Film> filmsForReturn = films;
+    public List<Film> findAll() {
+        List<Film> filmsForReturn = new ArrayList<>();
+        for (Film value : films.values()) {
+            filmsForReturn.add(value);
+        }
         return filmsForReturn;
     }
 
@@ -54,13 +57,13 @@ public class InMemoryFilmStorage implements Storage<Film> {
         }
     }
 
-    @Override
+
     public List<Film> getList() {
         return new ArrayList<>(films.values());
     }
 
     @Override
-    public Film getById(Integer filmId) {
+    public Film getById(long filmId) {
         if (filmId < 1) {
             throw new ValidationException("Некорректный ID");
         }
@@ -70,7 +73,7 @@ public class InMemoryFilmStorage implements Storage<Film> {
         return films.get(filmId);
     }
 
-    @Override
+
     public Boolean contains(Integer filmId) {
         return films.containsKey(filmId);
     }

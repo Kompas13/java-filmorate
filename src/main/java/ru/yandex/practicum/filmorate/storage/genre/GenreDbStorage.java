@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class GenreStorage {
+public class GenreDbStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public GenreStorage(JdbcTemplate jdbcTemplate) {
+    public GenreDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

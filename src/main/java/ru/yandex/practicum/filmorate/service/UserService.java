@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.Storage;
-import ru.yandex.practicum.filmorate.storage.friend.FriendStorage;
+import ru.yandex.practicum.filmorate.storage.friend.FriendDbStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.List;
 @Slf4j
 public class UserService {
     private final Storage userStorage;
-    private final FriendStorage friendStorage;
+    private final FriendDbStorage friendStorage;
 
     @Autowired
-    public UserService(@Qualifier("userDbStorage") Storage userStorage, FriendStorage friendStorage) {
+    public UserService(@Qualifier("userDbStorage") Storage userStorage, FriendDbStorage friendStorage) {
         this.userStorage = userStorage;
         this.friendStorage = friendStorage;
     }

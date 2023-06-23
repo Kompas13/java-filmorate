@@ -11,8 +11,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.RatingMPA;
 import ru.yandex.practicum.filmorate.storage.Storage;
-import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
-import ru.yandex.practicum.filmorate.storage.mpa.RatingStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
+import ru.yandex.practicum.filmorate.storage.mpa.RatingDbStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 @Component("filmDbStorage")
 @Slf4j
 public class FilmDbStorage implements Storage<Film> {
-    private final RatingStorage ratingStorage;
-    private final GenreStorage genreStorage;
+    private final RatingDbStorage ratingStorage;
+    private final GenreDbStorage genreStorage;
     private final JdbcTemplate jdbcTemplate;
     LocalDate date = LocalDate.of(1895, 12, 28);
 
     @Autowired
-    public FilmDbStorage(RatingStorage ratingStorage, GenreStorage genreStorage, JdbcTemplate jdbcTemplate) {
+    public FilmDbStorage(RatingDbStorage ratingStorage, GenreDbStorage genreStorage, JdbcTemplate jdbcTemplate) {
         this.ratingStorage = ratingStorage;
         this.genreStorage = genreStorage;
         this.jdbcTemplate = jdbcTemplate;

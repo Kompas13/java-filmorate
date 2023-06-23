@@ -12,11 +12,11 @@ import java.util.List;
 import static ru.yandex.practicum.filmorate.storage.user.UserDbStorage.userExists;
 
 @Component
-public class FriendStorage {
+public class FriendDbStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public FriendStorage(JdbcTemplate jdbcTemplate) {
+    public FriendDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

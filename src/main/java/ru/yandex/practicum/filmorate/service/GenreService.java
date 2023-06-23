@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
 
 import java.util.Comparator;
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class GenreService {
-    private final GenreStorage genreStorage;
+    private final GenreDbStorage genreStorage;
 
-    public GenreService(GenreStorage genreStorage) {
+    public GenreService(GenreDbStorage genreStorage) {
         this.genreStorage = genreStorage;
     }
 

@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class LikeStorage {
+public class LikeDbStorage {
     private final JdbcTemplate jdbcTemplate;
     private final Storage filmStorage;
 
     @Autowired
-    public LikeStorage(JdbcTemplate jdbcTemplate, @Qualifier("filmDbStorage") Storage filmStorage) {
+    public LikeDbStorage(JdbcTemplate jdbcTemplate, @Qualifier("filmDbStorage") Storage filmStorage) {
         this.jdbcTemplate = jdbcTemplate;
         this.filmStorage = filmStorage;
     }

@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class RatingStorage {
+public class RatingDbStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public RatingStorage(JdbcTemplate jdbcTemplate) {
+    public RatingDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

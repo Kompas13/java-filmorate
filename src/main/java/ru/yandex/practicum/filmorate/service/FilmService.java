@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.Storage;
-import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
-import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
+import ru.yandex.practicum.filmorate.storage.like.LikeDbStorage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -19,17 +20,17 @@ public class FilmService {
     private final JdbcTemplate jdbcTemplate;
     private final Storage filmStorage;
     private final Storage userStorage;
-    private final LikeStorage likeStorage;
-    private final GenreStorage genreStorage;
+    private final LikeDbStorage likeStorage;
+    private final GenreDbStorage genreStorage;
 
     @Autowired
     public FilmService(@Qualifier("filmDbStorage") Storage filmStorage,
-                       @Qualifier("userDbStorage") Storage userStorage, LikeStorage likeStorage, JdbcTemplate jdbcTemplate) {
+                       @Qualifier("userDbStorage") Storage userStorage, LikeDbStorage likeStorage, GenreDbStorage genreStorage, JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
         this.likeStorage = likeStorage;
-        this.genreStorage = new GenreStorage(jdbcTemplate);
+        this.genreStorage = genreStorage;
     }
 
     public List<Film> findFilms() {
@@ -82,5 +83,15 @@ public class FilmService {
         } catch (Exception e) {
             log.info("Лайк пользователя id={} не найден", userId);
         }
+    }
+
+    public List<Genre> findAll() {
+        return genreStorage.findAll().stream()
+                .sorted(Comparator.comparing(Genre::getId))
+                .collect(Collectors.toList());
+    }
+
+    public Genre getGenreById(int id) {
+        return genreStorage.getGenreById(id);
     }
 }

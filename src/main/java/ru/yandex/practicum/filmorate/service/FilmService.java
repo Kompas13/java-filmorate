@@ -7,9 +7,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.RatingMPA;
 import ru.yandex.practicum.filmorate.storage.Storage;
 import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
 import ru.yandex.practicum.filmorate.storage.like.LikeDbStorage;
+import ru.yandex.practicum.filmorate.storage.mpa.RatingDbStorage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,15 +24,17 @@ public class FilmService {
     private final Storage userStorage;
     private final LikeDbStorage likeStorage;
     private final GenreDbStorage genreStorage;
+    private final RatingDbStorage ratingStorage;
 
     @Autowired
     public FilmService(@Qualifier("filmDbStorage") Storage filmStorage,
-                       @Qualifier("userDbStorage") Storage userStorage, LikeDbStorage likeStorage, GenreDbStorage genreStorage, JdbcTemplate jdbcTemplate) {
+                       @Qualifier("userDbStorage") Storage userStorage, LikeDbStorage likeStorage, GenreDbStorage genreStorage, JdbcTemplate jdbcTemplate, RatingDbStorage ratingStorage) {
         this.jdbcTemplate = jdbcTemplate;
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
         this.likeStorage = likeStorage;
         this.genreStorage = genreStorage;
+        this.ratingStorage = ratingStorage;
     }
 
     public List<Film> findFilms() {
@@ -85,13 +89,21 @@ public class FilmService {
         }
     }
 
-    public List<Genre> findAll() {
-        return genreStorage.findAll().stream()
+    public List<Genre> getAllGenres() {
+        return genreStorage.findAllGenres().stream()
                 .sorted(Comparator.comparing(Genre::getId))
                 .collect(Collectors.toList());
     }
 
     public Genre getGenreById(int id) {
         return genreStorage.getGenreById(id);
+    }
+
+    public List<RatingMPA> getAllRatings() {
+        return ratingStorage.getAllMpa();
+    }
+
+    public RatingMPA getRatingById(int id) {
+        return ratingStorage.getMPAById(id);
     }
 }

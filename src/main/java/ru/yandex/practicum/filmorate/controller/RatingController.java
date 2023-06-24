@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.RatingMPA;
-import ru.yandex.practicum.filmorate.service.RatingService;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.List;
 
@@ -14,21 +14,21 @@ import java.util.List;
 @RestController
 @Slf4j
 public class RatingController {
-    private final RatingService ratingService;
+    private final FilmService filmService;
 
-    public RatingController(RatingService ratingService) {
-        this.ratingService = ratingService;
+    public RatingController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @GetMapping
     public List<RatingMPA> findAll() {
         log.debug("Получен GET-запрос к эндпоинту: /mpa на получение всех рейтингов mpa");
-        return ratingService.findAll();
+        return filmService.getAllRatings();
     }
 
     @GetMapping("/{id}")
     public RatingMPA getRatingById(@PathVariable int id) {
         log.debug("Получен GET-запрос к эндпоинту: /mpa/{id} на получение рейтинга mpa по id: {}", id);
-        return ratingService.getRatingById(id);
+        return filmService.getRatingById(id);
     }
 }

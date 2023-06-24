@@ -23,7 +23,7 @@ public class GenreDbStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Genre> findAll() {
+    public List<Genre> findAllGenres() {
         String sql = "SELECT * FROM GENRE";
         log.info("Выведен список всех жанров");
 

@@ -20,7 +20,7 @@ public class RatingDbStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<RatingMPA> findAll() {
+    public List<RatingMPA> getAllMpa() {
         String sql = "SELECT * FROM MPA_RATING";
         log.info("Выведен список всех рейтингов");
 

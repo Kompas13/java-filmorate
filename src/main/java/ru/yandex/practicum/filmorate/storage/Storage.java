@@ -1,19 +1,14 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 public interface Storage<T> {
 
-    Map<Integer, T> findAll();
+    List<T> findAll();
 
     T create(T element);
 
     T put(T element);
 
-    T getById(Integer elementId);
-
-    Collection<T> getList();
-
-    Boolean contains(Integer elementId);
+    T getById(long element);
 }

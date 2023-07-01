@@ -7,36 +7,36 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Film {
-    @NotBlank
+    private long id;
+    @NotBlank(message = "Название не может быть пустым")
     private String name;
-    @Size(min = 1, max = 200)
+    @NotNull
+    @Size(max = 200, message = "Максимальная длина описания — 200 символов")
     private String description;
     @NotNull
     private LocalDate releaseDate;
-    @Positive
-    @NotNull(message = "Не задана продолжительность фильма.")
+    @Positive(message = "Продолжительность фильма должна быть положительной")
     private int duration;
-    @Builder.Default
-    private int id;
-    private final Set<Integer> likesUser = new HashSet<>();
+    private long likes;
+    @NotNull
+    private RatingMPA mpa;
+    private Set<Genre> genres;
 
-    public void addLike(Integer userId) {
-        likesUser.add(userId);
+    public void addLike() {
+        this.likes++;
     }
 
-    public void deleteLike(Integer userId) {
-        likesUser.remove(userId);
-    }
-
-    public Set<Integer> getLikesUser() {
-        return new HashSet<>(likesUser);
+    public void deleteLike() {
+        if (likes > 0) {
+            this.likes--;
+        }
     }
 }
-
-

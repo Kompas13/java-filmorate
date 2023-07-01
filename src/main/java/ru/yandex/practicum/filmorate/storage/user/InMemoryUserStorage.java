@@ -17,12 +17,15 @@ import java.util.*;
 public class InMemoryUserStorage implements Storage<User> {
     private int id = 1;
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private Map<Integer, User> users = new HashMap<>();
+    private Map<Long, User> users = new HashMap<>();
 
-    public Map<Integer, User> findAll() {
+    public List<User> findAll() {
         log.info("Получение списка пользователей");
         log.info("Количество зарегистрированных пользователей: {}", users.size());
-        Map<Integer, User> usersForReturn = users;
+        List<User> usersForReturn = new ArrayList<>();
+        for (User value : users.values()) {
+            usersForReturn.add(value);
+        }
         return usersForReturn;
     }
 
@@ -61,19 +64,19 @@ public class InMemoryUserStorage implements Storage<User> {
     }
 
     @Override
-    public User getById(Integer userId) {
+    public User getById(long userId) {
         if (!users.containsKey(userId)) {
             throw new NotFoundException("Указанный ID не найден" + userId);
         }
         return users.get(userId);
     }
 
-    @Override
-    public List<User> getList() {
+
+    public Collection<User> getList() {
         return new ArrayList<>(users.values());
     }
 
-    @Override
+
     public Boolean contains(Integer userId) {
         return users.containsKey(userId);
     }
